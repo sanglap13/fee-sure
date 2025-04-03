@@ -2,6 +2,10 @@
 
 ## Version 0.x.x
 
+### v0.2.1 (Change)
+
+- change landing page UI
+
 ### v0.2.0 (Feature Add)
 
 - add auth with `firebase auth` basic flow.
