@@ -19,6 +19,9 @@ interface Student {
   phone: string;
   dob: string;
   created_at: string;
+  isActive: boolean;
+  isLate: string[] | null;
+  feePaid: string[];
 }
 
 interface AddStudentModalProps {
@@ -37,6 +40,9 @@ export default function AddStudentModal({
     email: "",
     phone: "",
     dob: "",
+    isActive: true,
+    isLate: null,
+    feePaid: [],
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +54,15 @@ export default function AddStudentModal({
 
     try {
       await onAddStudent(formData);
-      setFormData({ name: "", email: "", phone: "", dob: "" });
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        dob: "",
+        isActive: true,
+        isLate: null,
+        feePaid: [],
+      });
     } catch (error) {
       setError("Failed to add student. Please try again.");
     } finally {

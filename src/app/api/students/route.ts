@@ -105,7 +105,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { name, email, phone, dob } = body;
+    const { name, email, phone, dob, isActive, isLate, feePaid } = body;
 
     // Connect to MongoDB
     console.log("API: Connecting to MongoDB...");
@@ -133,6 +133,9 @@ export async function POST(request: Request) {
       email,
       phone,
       dob: new Date(dob),
+      isActive: isActive !== undefined ? isActive : true,
+      isLate: isLate || null,
+      feePaid: feePaid || [],
     });
     console.log("API: Student created successfully with ID:", student._id);
 

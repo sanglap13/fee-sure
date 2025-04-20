@@ -2,6 +2,12 @@
 
 ## Version 0.x.x
 
+### v0.4.0 (Major Change)
+
+- change in `student` schema.
+- add status change api for students.
+- modify student page UI.
+
 ### v0.3.0 (Feature Add)
 
 - add `mongodb` for database.

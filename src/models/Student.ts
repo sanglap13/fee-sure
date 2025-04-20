@@ -23,6 +23,18 @@ const studentSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  isLate: {
+    type: [String],
+    default: null,
+  },
+  feePaid: {
+    type: [String],
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now,
