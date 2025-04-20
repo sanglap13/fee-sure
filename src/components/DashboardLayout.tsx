@@ -52,7 +52,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       <Navbar userEmail={user.email || ""} />
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden h-[calc(100vh-64px)]">
         <Sidebar />
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>

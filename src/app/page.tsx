@@ -33,7 +33,24 @@ export default function Home() {
       setError(null);
 
       const result = await signInWithPopup(auth, googleProvider);
-      await setAuthToken(result.user);
+      const user = result.user;
+      await setAuthToken(user);
+
+      // Create user in database if they don't exist
+      const response = await fetch("/api/auth/check-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fid: user.uid,
+          email: user.email,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to check/create user");
+      }
 
       // Force a hard navigation to ensure proper state reset
       window.location.href = "/dashboard";

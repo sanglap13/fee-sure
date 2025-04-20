@@ -1,33 +1,60 @@
 "use client";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardLayout from "@/components/DashboardLayout";
 
-export default function Dashboard() {
+export default function DashboardPage() {
   return (
     <DashboardLayout>
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-extrabold leading-[1.2] tracking-tighter text-gradient geist-sans mb-8">
-          Welcome to your Dashboard
+          Dashboard
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="card p-6">
-            <h3 className="text-xl font-semibold mb-4 geist-sans">
-              Total Students
-            </h3>
-            <p className="text-4xl font-bold text-[#025DFF] geist-mono">0</p>
-          </div>
-          <div className="card p-6">
-            <h3 className="text-xl font-semibold mb-4 geist-sans">
-              Pending Fees
-            </h3>
-            <p className="text-4xl font-bold text-red-500 geist-mono">0</p>
-          </div>
-          <div className="card p-6">
-            <h3 className="text-xl font-semibold mb-4 geist-sans">
-              Paid This Month
-            </h3>
-            <p className="text-4xl font-bold text-green-500 geist-mono">0</p>
-          </div>
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Students
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">0</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Fees Collected
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">₹0</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Pending Fees
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">₹0</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                This Month's Collection
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">₹0</div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </DashboardLayout>

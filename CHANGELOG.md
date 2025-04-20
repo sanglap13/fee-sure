@@ -2,6 +2,13 @@
 
 ## Version 0.x.x
 
+### v0.3.0 (Feature Add)
+
+- add `mongodb` for database.
+- add api endpoints and backend setup.
+- update Ui of dashboard.
+- integrate backend data with frontend.
+
 ### v0.2.1 (Change)
 
 - change landing page UI

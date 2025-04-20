@@ -28,9 +28,11 @@ export default function Navbar({ userEmail }: NavbarProps) {
   };
 
   return (
-    <nav className="bg-gray-900/80 p-4 backdrop-blur-sm border-b border-gray-800">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold geist-sans">FeeSure</h1>
+    <nav className="bg-gray-900/80 py-4 backdrop-blur-sm border-b border-gray-800 h-16">
+      <div className="mx-8 flex justify-between items-center">
+        <h1 className="text-4xl font-extrabold leading-[1.2] tracking-tighter text-gradient geist-sans">
+          FeeSure
+        </h1>
         <div className="flex items-center gap-4">
           <span className="text-gray-300 geist-mono">{userEmail}</span>
           <button
