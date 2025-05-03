@@ -2,6 +2,11 @@
 
 ## Version 0.x.x
 
+### v0.5.0 (Feature Add)
+
+- add a modal for selecting the month of fee and payment date.
+- add the `fee status` calculation when user is created
+
 ### v0.4.0 (Major Change)
 
 - change in `student` schema.

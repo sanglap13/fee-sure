@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import FeePaymentDialog from "@/components/FeePaymentDialog";
 
 interface Student {
   _id: number;
@@ -20,7 +21,7 @@ interface Student {
   email: string;
   phone: string;
   dob: string;
-  created_at: string;
+  createdAt: string;
   isActive: boolean;
   isLate: string[] | null;
   feePaid: string[];
@@ -30,6 +31,8 @@ type StatusFilter = "active" | "inactive" | "all";
 
 export default function StudentsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFeePaymentOpen, setIsFeePaymentOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -66,7 +69,7 @@ export default function StudentsPage() {
   };
 
   const handleAddStudent = async (
-    studentData: Omit<Student, "_id" | "created_at">
+    studentData: Omit<Student, "_id" | "createdAt">
   ) => {
     try {
       const response = await fetch("/api/students", {
@@ -115,6 +118,43 @@ export default function StudentsPage() {
     }
   };
 
+  const handleFeePayment = async (student: Student) => {
+    setSelectedStudent(student);
+    setIsFeePaymentOpen(true);
+  };
+
+  const handleSendFeePayment = async (month: string, date: Date) => {
+    if (!selectedStudent) return;
+
+    try {
+      const response = await fetch(`/api/students/${selectedStudent._id}/fee`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          month,
+          date: date.toISOString(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update fee payment");
+      }
+
+      const updatedStudent = await response.json();
+      setStudents((prev) =>
+        prev.map((student) =>
+          student._id === updatedStudent._id ? updatedStudent : student
+        )
+      );
+      console.log("Fee payment recorded for month:", month);
+    } catch (error) {
+      console.error("Error updating fee payment:", error);
+      setError("Failed to update fee payment");
+    }
+  };
+
   const getFilteredStudents = () => {
     if (statusFilter === "all") return students;
     return students.filter((student) =>
@@ -132,12 +172,43 @@ export default function StudentsPage() {
       cell: (value: string) => new Date(value).toLocaleDateString(),
     },
     {
+      header: "Joined At",
+      accessor: "createdAt",
+      cell: (value: string) => new Date(value).toLocaleDateString(),
+    },
+    {
       header: "Fee Status",
       accessor: "isLate",
       cell: (value: string[] | null, row: Student) => {
         if (!value || value.length === 0) return "Up to date";
-        return `Late for: ${value.join(", ")}`;
+        return `Due: ${value.join(", ")}`;
       },
+    },
+    {
+      header: "Actions",
+      accessor: "actions",
+      cell: (_: any, row: Student) => (
+        <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => handleFeePayment(row)}
+          >
+            <Mail className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => handleStatusChange(row._id, !row.isActive)}
+          >
+            {row.isActive ? (
+              <X className="h-4 w-4 text-red-500" />
+            ) : (
+              <Check className="h-4 w-4 text-green-500" />
+            )}
+          </Button>
+        </div>
+      ),
     },
   ];
 
@@ -202,6 +273,17 @@ export default function StudentsPage() {
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onAddStudent={handleAddStudent}
+        />
+
+        <FeePaymentDialog
+          open={isFeePaymentOpen}
+          onClose={() => setIsFeePaymentOpen(false)}
+          onSend={handleSendFeePayment}
+          lastPaidMonth={
+            selectedStudent?.feePaid[selectedStudent.feePaid.length - 1] || null
+          }
+          studentName={selectedStudent?.name || ""}
+          selectedStudent={selectedStudent}
         />
       </div>
     </DashboardLayout>

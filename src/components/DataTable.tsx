@@ -30,9 +30,9 @@ export default function DataTable({
                 {column.header}
               </th>
             ))}
-            {showActions && (
+            {/* {showActions && (
               <th className="text-left py-3 px-4 text-gray-400">Actions</th>
-            )}
+            )} */}
           </tr>
         </thead>
         <tbody>
@@ -45,7 +45,7 @@ export default function DataTable({
                     : row[column.accessor]}
                 </td>
               ))}
-              {showActions && (
+              {/* {showActions && (
                 <td className="py-3 px-4">
                   <div className="flex gap-2">
                     <Button
@@ -76,7 +76,7 @@ export default function DataTable({
                     </Button>
                   </div>
                 </td>
-              )}
+              )} */}
             </tr>
           ))}
         </tbody>

@@ -63,6 +63,47 @@ export async function GET() {
     });
     console.log("API: Found", students.length, "students");
 
+    // Update isLate for each student
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    for (const student of students) {
+      const joined = new Date(student.createdAt);
+      const now = new Date();
+      let current = new Date(joined.getFullYear(), joined.getMonth(), 1);
+      const end = new Date(now.getFullYear(), now.getMonth(), 1);
+      const missed = [];
+      while (
+        current.getFullYear() < end.getFullYear() ||
+        (current.getFullYear() === end.getFullYear() &&
+          current.getMonth() <= end.getMonth())
+      ) {
+        const monthName = months[current.getMonth()];
+        if (!student.feePaid.includes(monthName)) {
+          missed.push(monthName);
+        }
+        current.setMonth(current.getMonth() + 1);
+      }
+      if (
+        (student.isLate && missed.join(",") !== student.isLate.join(",")) ||
+        (!student.isLate && missed.length > 0)
+      ) {
+        student.isLate = missed.length ? missed : null;
+        await student.save();
+      }
+    }
+
     return NextResponse.json(students);
   } catch (error) {
     console.error("API: Error fetching students:", error);
@@ -138,6 +179,40 @@ export async function POST(request: Request) {
       feePaid: feePaid || [],
     });
     console.log("API: Student created successfully with ID:", student._id);
+
+    // Set isLate for the new student
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const joined = new Date(student.createdAt);
+    const now = new Date();
+    let current = new Date(joined.getFullYear(), joined.getMonth(), 1);
+    const end = new Date(now.getFullYear(), now.getMonth(), 1);
+    const missed = [];
+    while (
+      current.getFullYear() < end.getFullYear() ||
+      (current.getFullYear() === end.getFullYear() &&
+        current.getMonth() <= end.getMonth())
+    ) {
+      const monthName = months[current.getMonth()];
+      if (!student.feePaid.includes(monthName)) {
+        missed.push(monthName);
+      }
+      current.setMonth(current.getMonth() + 1);
+    }
+    student.isLate = missed.length ? missed : null;
+    await student.save();
 
     return NextResponse.json(student);
   } catch (error) {

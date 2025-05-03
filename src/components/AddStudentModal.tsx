@@ -18,7 +18,7 @@ interface Student {
   email: string;
   phone: string;
   dob: string;
-  created_at: string;
+  createdAt: string;
   isActive: boolean;
   isLate: string[] | null;
   feePaid: string[];
@@ -27,7 +27,7 @@ interface Student {
 interface AddStudentModalProps {
   open: boolean;
   onClose: () => void;
-  onAddStudent: (student: Omit<Student, "_id" | "created_at">) => Promise<void>;
+  onAddStudent: (student: Omit<Student, "_id" | "createdAt">) => Promise<void>;
 }
 
 export default function AddStudentModal({
